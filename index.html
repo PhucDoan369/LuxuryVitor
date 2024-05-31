@@ -3,22 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Pages Website</title>
+    <title >Simple E-commerce Website</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Thêm kiểu cho mỗi góc màn hình */
+        .corner-decor {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+        }
+
+        .top-left {
+            top: 0;
+            left: 0;
+        }
+
+        .top-right {
+            top: 0;
+            right: 0;
+            transform: rotate(90deg);
+        }
+
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            transform: rotate(180deg);
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Website</h1>
-    <p>This is a simple website hosted on GitHub Pages.</p>
-    <script src="script.js"></script>
+
+<div class="container">
+    <h1 class="text-center my-4 luxury-title">LUXURY VICTORY</h1>
+
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <img src="images/1.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="images/2.jpg" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="images/3.jpg" style="width:100%">
+        </div>
+    </div>
+
+    <br>
+
+    <div style="text-align:center">
+        <span class="dot"></span> 
+        <span class="dot"></span> 
+        <span class="dot"></span> 
+    </div>
+
+    <div class="row justify-content-center" id="products">
+        <!-- Products will be inserted here dynamically -->
+    </div>
+
+    <h4 class="text-center my-2 giohang" >Giỏ Hàng</h4>
+    <ul class="list-group" id="cart">
+        <!-- Cart items will be inserted here dynamically -->
+    </ul>
+    <div class="text-center my-2 thanhtoan">
+        <h5>Tổng thanh toán: <span id="total-price">0 VNĐ</span></h5>
+    </div>
+    <div class="text-center mt-10">
+        <button class="btn btn-primary" id="checkout"> Đặt đơn </button>
+    </div>
+</div>
+<div class="text-center" >
+<br><br><p class="infor"> Thông tin chi tiết liên hệ  </p>
+<p> Số điện thoại: 0915606794 hoặc Zalo: 0915606794 </p>
+<p > Địa chỉ: Tổ dân phố 15, Khu công nghiệp Vân Chàng, Nam Giang, Nam Trực, Nam Định.</p>
+</div>
+<h1></h1>
+<br>
+<!-- Hình ảnh hoa văn cho mỗi góc màn hình -->
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-left">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-right">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-left">
+<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-right">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="script.js"></script>
+
+<script>
+    let slideIndex = 0;
+    showSlides();
+    function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}    
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";  
+        dots[slideIndex-1].className += " active";
+        setTimeout(showSlides, 2000); // Change image every 2 seconds
+    }
+</script>
 </body>
 </html>
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 50px;
-}
-
-h1 {
-    color: #333;
-}
-console.log("Hello, world!");
