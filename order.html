@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,136 +39,264 @@
         }
 
         /* Kiểu dáng cho thông báo */
-        .confirmation-message, .error-message {
+        .confirmation-message,
+        .error-message {
             background-color: #dff0d8;
             color: #3c763d;
             padding: 10px;
-            margin-top: 10px;
+            margin-top: -80px;
             border-radius: 5px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 25px;
         }
 
         .error-message {
             background-color: #f2dede;
             color: #a94442;
         }
+
+        .phone-error {
+            color: rgb(234, 48, 48);
+            display: none;
+        }
     </style>
 </head>
+
 <body>
-<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-left">
-<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-right">
-<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-left">
-<img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-right">
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-left">
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-right">
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-left">
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-right">
 
-<div class="container tx">
-    <h1 class="text-center giohang"> Đơn hàng của bạn </h1>
+    <div class="container tx">
+        <h1 class="text-center giohang"> Đơn hàng của bạn </h1>
 
-    <form id="order-form">
-        <div class="form-group">
-            <label for="customer-name">Tên khách hàng</label>
-            <input type="text" class="form-control" id="customer-name" required>
-        </div>
-        <div class="form-group">
-            <label for="customer-phone">Số điện thoại</label>
-            <input type="text" class="form-control" id="customer-phone" required>
-        </div>
-        <div class="form-group">
-            <label for="customer-address">Địa chỉ</label>
-            <input type="text" class="form-control" id="customer-address" required>
-        </div>
-        <table>
-            <tr>
-                <ul class="list-group" id="order-summary">
-                    <!-- Order summary will be inserted here dynamically -->
-                </ul>
-            </tr>
-            <tr>
-                <div class="text-right mt-2">
-                    <h5>Tổng: <span id="total-price">0 VNĐ</span></h5>
-                </div>
-                <button type="submit" class="btn btn-primary mt-4">Xác nhận đơn hàng</button>
-            </tr>
-        </table>
-    </form>
-</div>
+        <form id="order-form">
+            <div class="form-group">
+                <label for="customer-name">Tên khách hàng</label>
+                <input type="text" class="form-control" id="customer-name" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-phone">Số điện thoại</label>
+                <input type="text" class="form-control" id="customer-phone" required pattern="^0[0-9]{9,10}$">
+                <span class="phone-error" id="phone-error">Số điện thoại không hợp lệ. Vui lòng nhập lại!</span>
+            </div>
+            <div class="form-group">
+                <label for="calc_shipping_provinces">Tỉnh / Thành phố</label>
+                <select name="calc_shipping_provinces" id="calc_shipping_provinces" class="form-control" required>
+                    <option value="">Tỉnh / Thành phố</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="calc_shipping_district">Quận / Huyện</label>
+                <select name="calc_shipping_district" id="calc_shipping_district" class="form-control" required>
+                    <option value="">Quận / Huyện</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="customer-address">Địa chỉ chi tiết</label>
+                <input type="text" class="form-control" id="customer-address" required>
+            </div>
+            <table>
+                <tr>
+                    <ul class="list-group" id="order-summary">
+                        <!-- Order summary will be inserted here dynamically -->
+                    </ul>
+                </tr>
+                <tr>
+                    <div class="text-right mt-2">
+                        <h5>Tổng: <span id="total-price">0 VNĐ</span></h5>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Xác nhận đơn hàng</button>
+                </tr>
+            </table>
+        </form>
+    </div>
 
-<script>
-    function formatVND(amount) {
-        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/vietblogdao/js/districts.min.js"></script>
+    <script>
+        function formatVND(amount) {
+            return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
+        document.getElementById('order-form').addEventListener('submit', (event) => {
+            const phoneInput = document.getElementById('customer-phone');
+            const phoneError = document.getElementById('phone-error');
+            const phonePattern = /^0[0-9]{9,10}$/;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const orderSummary = document.getElementById('order-summary');
-        let totalPrice = 0;
-
-        cart.forEach(item => {
-            const orderItem = document.createElement('li');
-            orderItem.className = 'list-group-item';
-            orderItem.innerText = `${item.description} - ${formatVND(item.price)} x ${item.quantity}`;
-            orderSummary.appendChild(orderItem);
-
-            totalPrice += item.price * item.quantity;
+            if (!phonePattern.test(phoneInput.value)) {
+                event.preventDefault();
+                phoneError.style.display = 'block';
+            } else {
+                phoneError.style.display = 'none';
+            }
         });
 
-        document.getElementById('total-price').innerText = formatVND(totalPrice);
 
-        document.getElementById('order-form').addEventListener('submit', (event) => {
-            event.preventDefault();
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const orderSummary = document.getElementById('order-summary');
+            let totalPrice = 0;
 
-            const name = document.getElementById('customer-name').value;
-            const phone = document.getElementById('customer-phone').value;
-            const address = document.getElementById('customer-address').value;
+            cart.forEach(item => {
+                const orderItem = document.createElement('li');
+                orderItem.className = 'list-group-item';
+                orderItem.innerText = `${item.description} - ${formatVND(item.price)} x${item.quantity} chiếc`;
+                orderSummary.appendChild(orderItem);
 
-            const token = '7003091232:AAH_e26ZNI81g8t4ZlQ5PKIuRI93p0Mv3hs';
-            const chatId = '6549625165';
-            const message = `---------------- \nĐơn hàng mới từ: ${name}\nSĐT: ${phone}\nĐịa chỉ: ${address}\n\nSản phẩm:\n` +
-                cart.map(item => `${item.description} - ${formatVND(item.price)} x ${item.quantity}`).join('\n') +
-                `\n\nTổng cộng: ${formatVND(totalPrice)}\n ---------------- \n`;
+                totalPrice += item.price * item.quantity;
+            });
 
-            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    // Hiển thị thông báo xác nhận trên trang
-                    const confirmationMessage = document.createElement('p');
-                    confirmationMessage.className = 'confirmation-message';
-                    confirmationMessage.innerText = 'Đơn hàng của bạn đã được xác nhận và gửi đi thành công!';
-                    document.body.appendChild(confirmationMessage);
+            document.getElementById('total-price').innerText = formatVND(totalPrice);
 
-                    // Xóa giỏ hàng khỏi localStorage
-                    localStorage.removeItem('cart');
+            $('select[name="calc_shipping_provinces"]').each(function () {
+                var $this = $(this),
+                    stc = '';
+                c.forEach(function (i, e) {
+                    e += 1;
+                    stc += '<option value=' + e + '>' + i + '</option>';
+                });
+                $this.html('<option value="">Tỉnh / Thành phố</option>' + stc);
 
-                    // Điều hướng trở lại trang chủ sau khi xác nhận đơn hàng
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 3000); // Chuyển hướng sau 3 giây
-                } else {
+                if (address_1 = localStorage.getItem('address_1_saved')) {
+                    $('select[name="calc_shipping_provinces"] option').each(function () {
+                        if ($(this).text() == address_1) {
+                            $(this).attr('selected', '');
+                        }
+                    });
+                    $('input.billing_address_1').attr('value', address_1);
+                }
+                $this.on('change', function (i) {
+                    i = $this.children('option:selected').index() - 1;
+                    var str = '',
+                        r = $this.val();
+                    if (r != '') {
+                        arr[i].forEach(function (el) {
+                            str += '<option value="' + el + '">' + el + '</option>';
+                        });
+                        $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>' + str);
+                        var address_1 = $this.children('option:selected').text();
+                        var district = $('select[name="calc_shipping_district"]').html();
+                        localStorage.setItem('address_1_saved', address_1);
+                        localStorage.setItem('district', district);
+                        $('select[name="calc_shipping_district"]').on('change', function () {
+                            var target = $(this).children('option:selected');
+                            target.attr('selected', '');
+                            $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected');
+                            var address_2 = target.text();
+                            $('input.billing_address_2').attr('value', address_2);
+                            district = $('select[name="calc_shipping_district"]').html();
+                            localStorage.setItem('district', district);
+                            localStorage.setItem('address_2_saved', address_2);
+                        });
+                    } else {
+                        $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>');
+                        district = $('select[name="calc_shipping_district"]').html();
+                        localStorage.setItem('district', district);
+                        localStorage.removeItem('address_1_saved', address_1);
+                    }
+                });
+            });
+
+            if (address_2 = localStorage.getItem('address_2_saved')) {
+                $('select[name="calc_shipping_district"] option').each(function () {
+                    if ($(this).text() == address_2) {
+                        $(this).attr('selected', '');
+                    }
+                });
+                $('input.billing_address_2').attr('value', address_2);
+            }
+            if (district = localStorage.getItem('district')) {
+                $('select[name="calc_shipping_district"]').html(district);
+                $('select[name="calc_shipping_district"]').on('change', function () {
+                    var target = $(this).children('option:selected');
+                    target.attr('selected', '');
+                    $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected');
+                    address_2 = target.text();
+                    $('input.billing_address_2').attr('value', address_2);
+                    district = $('select[name="calc_shipping_district"]').html();
+                    localStorage.setItem('district', district);
+                    localStorage.setItem('address_2_saved', address_2);
+                });
+            }
+
+            document.getElementById('order-form').addEventListener('submit', (event) => {
+                event.preventDefault();
+                if (totalPrice === 0) {
                     // Hiển thị thông báo lỗi trên trang
                     const errorMessage = document.createElement('p');
                     errorMessage.className = 'error-message';
-                    errorMessage.innerText = 'Đã xảy ra lỗi khi gửi đơn hàng!';
+                    errorMessage.innerText = 'Giỏ hàng của bạn đang trống!';
                     document.body.appendChild(errorMessage);
+                    localStorage.removeItem('cart');
+                    // Điều hướng trở lại trang chủ sau khi xác nhận đơn hàng
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                    return; // Dừng lại nếu giỏ hàng trống
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Hiển thị thông báo lỗi trên trang
-                const errorMessage = document.createElement('p');
-                errorMessage.className = 'error-message';
-                errorMessage.innerText = 'Đã xảy ra lỗi khi gửi đơn hàng!';
-                document.body.appendChild(errorMessage);
+
+                const name = document.getElementById('customer-name').value;
+                const phone = document.getElementById('customer-phone').value;
+                const addressProvince = $('#calc_shipping_provinces option:selected').text();
+                const addressDistrict = $('#calc_shipping_district option:selected').text();
+                const detailedAddress = document.getElementById('customer-address').value;
+
+                const fullAddress = `${detailedAddress}, ${addressDistrict}, ${addressProvince}`;
+
+
+                const token = '7003091232:AAH_e26ZNI81g8t4ZlQ5PKIuRI93p0Mv3hs';
+                const chatId = '6549625165';
+                const message = `---------------- \nĐơn hàng mới từ: ${name}\nSĐT: ${phone}\nĐịa chỉ: ${fullAddress}\n\nSản phẩm:\n` +
+                    cart.map(item => `${item.description} X ${item.quantity} cái`).join('\n') +
+                    `\n\nTổng cộng: ${formatVND(totalPrice)}\n\n ---------------- \n`;
+
+                fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.ok) {
+                            // Hiển thị thông báo xác nhận trên trang
+                            const confirmationMessage = document.createElement('p');
+                            confirmationMessage.className = 'confirmation-message';
+                            confirmationMessage.innerText = 'Xác nhận thành công!';
+                            document.body.appendChild(confirmationMessage);
+
+                            // Xóa giỏ hàng khỏi localStorage
+                            localStorage.removeItem('cart');
+
+                            // Điều hướng trở lại trang chủ sau khi xác nhận đơn hàng
+                            setTimeout(() => {
+                                window.location.href = 'index.html';
+                            }, 3000); // Chuyển hướng sau 3 giây
+                        } else {
+                            // Hiển thị thông báo lỗi trên trang
+                            const errorMessage = document.createElement('p');
+                            errorMessage.className = 'error-message';
+                            errorMessage.innerText = 'Đã xảy ra lỗi khi gửi đơn hàng!';
+                            document.body.appendChild(errorMessage);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Hiển thị thông báo lỗi trên trang
+                        const errorMessage = document.createElement('p');
+                        errorMessage.className = 'error-message';
+                        errorMessage.innerText = 'Đã xảy ra lỗi khi gửi đơn hàng!';
+                        document.body.appendChild(errorMessage);
+                    });
             });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
