@@ -2,15 +2,14 @@ body {
   padding-top: 20px;
   background-color: #f2eeee;
 }
-
 .luxury-title {
   font-family: 'Playfair Display', serif;
   font-size: 48px;
   color: #333;
   margin-top: 20px;
   margin-bottom: 20px;
+  border-bottom: 2px solid #3333330d; /* Thêm viền dưới với độ dày là 2px và màu sắc là #333 */
 }
-
 .giohang {
   font-family: 'Playfair Display', serif;
   font-size: 30px;
@@ -142,11 +141,13 @@ img {
   font-weight: bold;
   font-size: 16px;
   margin-top: -18px;
+  border-top: 2px solid #3333330e; /* Thêm viền dưới với độ dày là 2px và màu sắc là #333 */
 }
 
 p {
   margin-top: -18px;
-  font-size: 15px;
+  font-size: 14px;
+  font-family: 'Playfair Display', serif;
 }
 
 .prod {
@@ -210,3 +211,55 @@ p {
       height: auto;
   }
 }
+#cart-icon {
+  position: fixed;
+  top: 71%;
+  right: 23px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  z-index: 1000;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#cart-icon img {
+  width: 125%;
+  height: auto;
+  
+}
+
+#cart-count {
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.emtpyProd {
+  background-color: #f2eeee81;
+  color: #471010;
+  padding: 10px;
+  position: fixed; /* Thay đổi thành fixed để đảm bảo vị trí không bị thay đổi khi cuộn trang */
+  top: 300px; /* Điều chỉnh top để đặt vị trí của thông báo */
+  left: 50%; /* Đặt thông báo ở giữa màn hình */
+  transform: translateX(-50%); /* Dịch chuyển thông báo sang trái 50% để căn giữa */
+  border-radius: 25px;
+  text-align: center;
+  font-family: serif;
+  font-size: 20px;
+  z-index: 1;
+}
+

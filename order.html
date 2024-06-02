@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="images/IMG_5184.JPG">
     <title>Đơn hàng của bạn</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -38,23 +39,35 @@
             transform: rotate(180deg);
         }
 
-        /* Kiểu dáng cho thông báo */
-        .confirmation-message,
-        .error-message {
-            background-color: #dff0d8;
-            color: #3c763d;
-            padding: 10px;
-            margin-top: -80px;
-            border-radius: 5px;
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 25px;
-        }
+.confirmation-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 10px;
+    position: fixed; /* Thay đổi thành fixed để đảm bảo vị trí không bị thay đổi khi cuộn trang */
+    top: 180px; /* Điều chỉnh top để đặt vị trí của thông báo */
+    left: 50%; /* Đặt thông báo ở giữa màn hình */
+    transform: translateX(-50%); /* Dịch chuyển thông báo sang trái 50% để căn giữa */
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    z-index: 1; /* Đảm bảo rằng thông báo nổi lên trên các phần tử khác */
+}
 
-        .error-message {
-            background-color: #f2dede;
-            color: #a94442;
-        }
+.error-message {
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 10px;
+    position: fixed; /* Thay đổi thành fixed để đảm bảo vị trí không bị thay đổi khi cuộn trang */
+    top: 180px; /* Điều chỉnh top để đặt vị trí của thông báo */
+    left: 50%; /* Đặt thông báo ở giữa màn hình */
+    transform: translateX(-50%); /* Dịch chuyển thông báo sang trái 50% để căn giữa */
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    z-index: 1;
+}
 
         .phone-error {
             color: rgb(234, 48, 48);
@@ -95,9 +108,10 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="customer-address">Địa chỉ chi tiết</label>
+                <label for="customer-address">Số nhà - Thôn xã</label>
                 <input type="text" class="form-control" id="customer-address" required>
             </div>
+            <h1 class="text-center giohang"> Giỏ Hàng </h1>
             <table>
                 <tr>
                     <ul class="list-group" id="order-summary">
@@ -113,6 +127,7 @@
             </table>
         </form>
     </div>
+    <br><br>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/vietblogdao/js/districts.min.js"></script>

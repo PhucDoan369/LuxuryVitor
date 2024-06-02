@@ -34,7 +34,9 @@ function renderProducts() {
                 <div class="soluong-container">
                 <input type="number" min="1" value="${product.quantity}" id="quantity-${product.id}" class="form-control soluong">
                 </div>
+                <div class="tx">
                 <button class="btn btn-success" onclick="addToCart(${product.id})">Thêm vào giỏ hàng</button>
+                </div>
             </div>
         `;
         productsContainer.appendChild(productCard);
@@ -43,8 +45,10 @@ function renderProducts() {
 
 function renderCart() {
     const cartContainer = document.getElementById('cart');
+    const cartCount = document.getElementById('cart-count');
     cartContainer.innerHTML = '';
     let totalPrice = 0;
+    let totalQuantity = 0;
 
     cart.forEach((item, index) => {
         const cartItem = document.createElement('li');
@@ -53,15 +57,17 @@ function renderCart() {
             ${item.description} - ${formatVND(item.price)} x 
             <input type="number" min="1" value="${item.quantity}" class="form-control quantity-input" data-index="${index}" onchange="updateQuantity(${index}, this.value)">
             <div class="cart-actions">
-                <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Thao tác</button>
+                <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})"> Xóa</button>
             </div>
         `;
         cartContainer.appendChild(cartItem);
 
         totalPrice += item.price * item.quantity;
+        totalQuantity += item.quantity;
     });
 
     document.getElementById('total-price').innerText = formatVND(totalPrice);   
+    cartCount.innerText = totalQuantity;
 }
 
 function addToCart(productId) {
@@ -89,9 +95,37 @@ function removeFromCart(index) {
 }
 
 document.getElementById('checkout').addEventListener('click', () => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    window.location.href = 'order.html';
+    if (cart.length > 0) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.location.href = 'order.html';
+    } else {
+        // Hiển thị thông báo lỗi trên trang
+        const errorMessage = document.createElement('p');
+        errorMessage.className = 'emtpyProd'; // Sửa className thành 'error-message'
+        errorMessage.innerText = 'Giỏ hàng của bạn đang trống!';
+        document.body.appendChild(errorMessage); // Thêm thông báo lỗi vào body của trang
+        setTimeout(() => {
+            errorMessage.remove(); // Loại bỏ thông báo sau một khoảng thời gian
+        }, 3000);
+    }
 });
+
+function goToOrderPage() {
+    if (cart.length > 0) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.location.href = 'order.html';
+    } else {
+        // Hiển thị thông báo lỗi trên trang
+        const errorMessage = document.createElement('p');
+        errorMessage.className = 'emtpyProd'; // Sửa className thành 'error-message'
+        errorMessage.innerText = 'Giỏ hàng của bạn đang trống!';
+        document.body.appendChild(errorMessage); // Thêm thông báo lỗi vào body của trang
+        setTimeout(() => {
+            errorMessage.remove(); // Loại bỏ thông báo sau một khoảng thời gian
+        }, 3000);
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', renderProducts);
 
