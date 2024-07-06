@@ -3,14 +3,14 @@ const products = [
         id: 1,
         image: 'images/5moc.jpg',
         description: 'Mắc áo 5 móc INOX 304',
-        price: 300000,
+        price: 200000,
         quantity: 1
     },
     {
         id: 2,
         image: 'images/7moc.jpg',
         description: 'Mắc áo 7 móc INOX 304',
-        price: 350000,
+        price: 250000,
         quantity: 1
     }
 ];
