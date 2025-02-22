@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Vitory</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/IMG_5184.JPG">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Thêm kiểu cho mỗi góc màn hình */
+        .mySlides {
+            display: none;
+        }
+
+        .corner-decor {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+        }
+
+        .top-left {
+            top: 0;
+            left: 0;
+        }
+
+        .top-right {
+            top: 0;
+            right: 0;
+            transform: rotate(90deg);
+        }
+
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center my-4 luxury-title">LUXURY VICTORY</h1>
+        <div class="slideshow-container w3-content w3-section" style="max-width:1000px">
+            <img class="mySlides" src="images/gioithieu.jpg" style="width:100%">
+            <img class="mySlides" src="images/5moc.jpg" style="width:100%">
+            <img class="mySlides" src="images/7moc.jpg" style="width:100%">
+            <img class="mySlides" src="images/chieu1.jpg" style="width:100%">
+            <img class="mySlides" src="images/chieu2.jpg" style="width:100%">
+            <img class="mySlides" src="images/chieu3.jpg" style="width:100%">
+            <img class="mySlides" src="images/chieu4.jpg" style="width:100%">
+            <img class="mySlides" src="images/IMG_5276.JPG" style="width:100%">
+        </div>
+        <h4 class="text-center sanpham">Sản Phẩm</h4>
+        <div class="row justify-content-center" id="products">
+            <!-- Products will be inserted here dynamically -->
+        </div>
+
+        <h4 class="text-center my-2 giohang">Giỏ Hàng</h4>
+        <ul class="list-group" id="cart">
+            <!-- Cart items will be inserted here dynamically -->
+        </ul>
+        <div class="text-center my-2 thanhtoan">
+            <h5 class="tx">Tổng thanh toán: <span id="total-price">0 VNĐ</span></h5>
+        </div>
+        <div class="text-center mt-10">
+            <button class="btn btn-primary" id="checkout"> Đặt đơn </button>
+        </div>
+    </div>
+    <!-- Biểu tượng giỏ hàng -->
+    <div id="cart-icon" onclick="goToOrderPage()">
+        <img src="images/giohang.png" alt="Cart Icon">
+        <span id="cart-count">0</span>
+    </div>
+    <br><br><br>
+    <div class="text-center">
+        <br><br>
+        <p class="infor"> Thông tin chi tiết liên hệ </p>
+        <p> Số điện thoại: <a href="tel:+84367781833" style="color: rgb(0, 165, 168); font-size: 15px;">036 778 1833</a>
+            hoặc <a href="https://zalo.me/0941963909" style="color: rgb(0, 165, 168); font-size: 15px;">Zalo: 0941 963
+                909 </a> </p>
+        <p> Địa chỉ: Tổ dân phố 15, Khu công nghiệp Vân Chàng, Nam Giang, Nam Trực, Nam Định.</p>
+        <p> Bộ sưu tập nội thất đẳng cấp, Luxury Victor tự hào mang đến cho bạn những nội thất vượt trội với (móc áo, mắc áo) sang trọng đưa góc nhìn nhà bạn nâng tầm không gian! </p>
+    </div>
+    <h1></h1>
+    <br>
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-left">
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor top-right">
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-left">
+    <img src="images/gocs.png" alt="Corner Decoration" class="corner-decor bottom-right">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        var myIndex = 0;
+        carousel();
+
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            myIndex++;
+            if (myIndex > x.length) { myIndex = 1 }
+            x[myIndex - 1].style.display = "block";
+            setTimeout(carousel, 2000); // Change image every 2 seconds
+        }
+        let slideIndex = 0;
+        showSlides();
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16610511170">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-16610511170');
+</script>
+</body>
+
+</html>
+<!--'; -->
