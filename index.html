@@ -87,54 +87,25 @@
     </div>
 
     <!-- Trình phát nhạc được ẩn -->
-    <audio id="musicPlayer" loop="" autoplay="" src="media/%EB%8B%AC%EC%9D%98-%EC%97%B0%EC%9D%B8-%EB%B3%B4%EB%B3%B4%EA%B2%BD%EC%8B%AC-%EB%A0%A4-OST-Part-2-%EB%A1%9C%EA%BC%AC-%ED%8E%80%EC%B9%98-Loco-Punch-Say-Yes-MV-mp3cut.net_.mp3"></audio>
+    <audio id="musicPlayer" loop="" src="media/%EB%8B%AC%EC%9D%98-%EC%97%B0%EC%9D%B8-%EB%B3%B4%EB%B3%B4%EA%B2%BD%EC%8B%AC-%EB%A0%A4-OST-Part-2-%EB%A1%9C%EA%BC%AC-%ED%8E%80%EC%B9%98-Loco-Punch-Say-Yes-MV-mp3cut.net_.mp3"></audio>
 
     <script>
-      var musicPlayer = document.getElementById("musicPlayer");
-      var playPauseButton = document.querySelector(".tdk-music");
-      var isPlaying = false;
-  
-      // Hàm bật/tắt nhạc
-      function toggleMusic() {
-          if (isPlaying) {
-              musicPlayer.pause();
-              playPauseButton.classList.remove("playing");
-          } else {
-              musicPlayer.play().catch(error => {
-                  console.warn("Không thể phát nhạc ngay lập tức, chờ thử lại...", error);
-                  retryPlay();
-              });
-              playPauseButton.classList.add("playing");
-          }
-          isPlaying = !isPlaying;
-      }
-  
-      // Hàm thử phát lại nếu mạng chậm hoặc gặp lỗi
-      function retryPlay() {
-          setTimeout(() => {
-              musicPlayer.play().catch(error => {
-                  console.warn("Thử lại nhưng vẫn lỗi, chờ thêm chút nữa...", error);
-                  retryPlay();
-              });
-          }, 2000); // Thử lại sau 2 giây
-      }
-  
-      // Đợi nhạc tải xong rồi mới phát
-      musicPlayer.oncanplaythrough = function () {
-          setTimeout(() => {
-              toggleMusic();
-          }, 3000);
-      };
-  
-      // Nếu có lỗi khi tải, thử lại
-      musicPlayer.onerror = function () {
-          console.warn("Lỗi tải nhạc, thử lại...");
-          setTimeout(() => {
-              musicPlayer.load(); // Tải lại tệp nhạc
-              retryPlay();
-          }, 3000);
-      };
-  </script>
+        var musicPlayer = document.getElementById("musicPlayer");
+        var playPauseButton = document.querySelector(".tdk-music");
+        var isPlaying = true; // Ban đầu là không đang phát
+
+        // Hàm để bật hoặc tạm dừng trình phát nhạc và thay đổi hình ảnh của nút
+        function toggleMusic() {
+            if (isPlaying) {
+                musicPlayer.pause();
+                playPauseButton.classList.remove("playing");
+            } else {
+                musicPlayer.play();
+                playPauseButton.classList.add("playing");
+            }
+            isPlaying = !isPlaying; // Chuyển trạng thái đang phát hoặc tạm dừng
+        }
+    </script>
     <script>
   // Đặt hàm toggleMusic() vào hàm setTimeout() để chạy sau 3 giây
   setTimeout(function() {
