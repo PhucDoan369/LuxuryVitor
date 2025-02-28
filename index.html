@@ -97,10 +97,10 @@
         // Hàm để bật hoặc tạm dừng trình phát nhạc và thay đổi hình ảnh của nút
         function toggleMusic() {
             if (isPlaying) {
-                musicPlayer.pause();
+                musicPlayer.play();
                 playPauseButton.classList.remove("playing");
             } else {
-                musicPlayer.play();
+                musicPlayer.pause();
                 playPauseButton.classList.add("playing");
             }
             isPlaying = !isPlaying; // Chuyển trạng thái đang phát hoặc tạm dừng
